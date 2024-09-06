@@ -1,7 +1,5 @@
 # Data Engineer Technical Test
 
----
-
 ## Part 1: SQL and Query Optimization
 
 ### Exercise 1: Writing Queries
