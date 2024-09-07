@@ -37,7 +37,7 @@ The orders of the last 6 months (`show_order_last_six_months.sql`):
 
 ![Orders of the last 6 months](./images/show_order_last_six_months.png)
 
-The result of the initial query (`first_solution_result.sql`):
+The result of the initial query:
 
 ![Result of the initial query](./images/first_solution_result.png)
 
@@ -65,7 +65,7 @@ JOIN params p ON o.order_date >= p.date_limit
 GROUP BY c.customer_id;
 ```
 
-The result of the optimized query (`solution_optimized_result.sql`):
+The result of the optimized query:
 
 ![Result of the optimized query](./images/solution_optimized_result.png)
 
@@ -101,6 +101,32 @@ GROUP BY
 - Explain the applied improvements.
 
 ---
+
+### Solution for Exercise 2
+
+The provided SQL query is slow, taking **93ms** to execute.
+
+![Execution time of the given query](./images/not_optimized_query_result.png)
+
+Following the same approach as in **Exercise 1**, we can optimize the query by creating appropriate indexes:
+
+- **`product_id`** on `Order_Details` to improve the `JOIN` with `Products`.
+- **`order_id`** on `Order_Details` to optimize the `JOIN` with `Orders`.
+- **`order_date`** on `Orders` to accelerate the date filter.
+
+```sql
+CREATE INDEX idx_order_details_product_id ON Order_Details (product_id);
+CREATE INDEX idx_order_details_order_id ON Order_Details (order_id);
+CREATE INDEX idx_orders_order_date ON Orders (order_date);
+```
+
+These indexes reduce the need for full table scans, improving lookup times and speeding up JOIN operations.
+
+The full optimized query is in `optimized_query.sql`.
+
+The optimized query execution time was reduced to **46ms**, as shown below:
+
+![Optimized query result](./images/optimized_query_result.png)
 
 ## Part 2: Data Modeling
 
