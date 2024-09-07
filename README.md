@@ -20,6 +20,59 @@
 
 ---
 
+### Solution for Exercise 1
+
+The SQL script for the initial query is as follows (`first_solution.sql`):
+```sql
+SELECT c.customer_id, c.name, SUM(o.total_amount) AS total_spent
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_date >= (NOW() - INTERVAL '6 months')
+GROUP BY c.customer_id
+ORDER BY total_spent DESC;
+```
+In the above query, we are joining the `customers` and `orders` tables and filtering the orders placed in the last 6 months. We then group the results by `customer_id` and calculate the total amount spent by each customer, sorting the results by total amount spent in descending order to see the highest spenders first (although this is not necessary).
+
+The orders of the last 6 months (`show_order_last_six_months.sql`):
+
+![Orders of the last 6 months](./images/show_order_last_six_months.png)
+
+The result of the initial query (`first_solution_result.sql`):
+
+![Result of the initial query](./images/first_solution_result.png)
+
+Time taken to execute the initial query: **64ms**
+
+![Execution time of the initial query](./images/execution_time_first_solution.png)
+
+To optimize the query, we can consider the following:
+- **Indexing**: This can improve the query performance significantly for JOIN operations and WHERE conditions.
+- **Use session variables**: We can use session variables to avoid calculating the same value multiple times.
+- **Remove unnecessary operations**: Removing DESC sorting can improve performance.
+
+The optimized version of the query is as follows (`solution_optimized.sql`):
+```sql
+CREATE INDEX idx_orders_customer_id ON Orders (customer_id);
+CREATE INDEX idx_orders_order_date ON Orders (order_date);
+
+WITH params AS (
+    SELECT NOW() - INTERVAL '6 months' AS date_limit
+)
+SELECT c.customer_id, c.name, SUM(o.total_amount) AS total_spent
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN params p ON o.order_date >= p.date_limit
+GROUP BY c.customer_id;
+```
+
+The result of the optimized query (`solution_optimized_result.sql`):
+
+![Result of the optimized query](./images/solution_optimized_result.png)
+
+Time taken to execute the optimized query: **46ms**
+
+![Execution time of the optimized query](./images/execution_time_solution_optimized.png)
+
 ### Exercise 2: SQL Query Optimization
 
 You are given the following SQL query, which is taking too long to execute:
@@ -103,3 +156,8 @@ Assume you have a database with the following tables: `raw_customers`, `raw_orde
 - A brief explanation of the design decisions for the dashboard.
 
 ---
+
+## Tools Used
+
+- **Database**: PostgreSQL
+- PgAdmin 4

@@ -42,7 +42,8 @@ INSERT INTO Orders (customer_id, order_date, total_amount) VALUES
 (1, '2024-01-03', 500.00),
 (2, '2024-05-04', 1200.00),
 (1, '2024-07-05', 800.00),
-(2, '2024-09-06', 500.00);
+(2, '2024-09-06', 500.00),
+(1, '2020-05-01', 1200.00);
 
 INSERT INTO Order_Details (order_id, product_id, quantity, price) VALUES
 (1, 1, 1, 1200.00),
@@ -50,4 +51,5 @@ INSERT INTO Order_Details (order_id, product_id, quantity, price) VALUES
 (3, 3, 1, 500.00),
 (4, 1, 1, 1200.00),
 (5, 2, 1, 800.00),
-(6, 3, 1, 500.00);
+(6, 3, 1, 500.00),
+(7, 1, 1, 1200.00);
