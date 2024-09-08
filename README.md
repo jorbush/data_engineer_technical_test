@@ -189,12 +189,13 @@ Assume you have a database with the following tables: `raw_customers`, `raw_orde
 
 Using the same `sales` db from  **Part 1**, I have initialized a new DBT project using Python:
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    dbt init
-    ```
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+dbt init
+```
+
 This create a `profiles.yml` file in the `.dbt` directory with the following content:
 
 ```yml
