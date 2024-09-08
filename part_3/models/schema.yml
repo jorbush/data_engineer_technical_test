@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: raw
+    database: sales
+    schema: public
+    tables:
+      - name: customers
+      - name: orders
+      - name: products
+      - name: order_details
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+
+  - name: customer_sales
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('customers')
+              field: customer_id
+      - name: total_sales
+        tests:
+          - not_null
