@@ -185,6 +185,87 @@ Assume you have a database with the following tables: `raw_customers`, `raw_orde
 
 ---
 
+### Solution for Exercise 4
+
+Using the same `sales` db from  **Part 1**, I have initialized a new DBT project using Python:
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    dbt init
+    ```
+This create a `profiles.yml` file in the `.dbt` directory with the following content:
+
+```yml
+my_dbt_profile:
+  outputs:
+    dev:
+      dbname: sales
+      host: localhost
+      pass: postgres
+      port: 5432
+      schema: orders
+      threads: 1
+      type: postgres
+      user: postgres
+  target: dev
+```
+
+I have created the following models:
+
+- `customers.sql`: Normalizes the data from `raw_customers`.
+- `costumer_sales.sql`: Calculates total sales per customer using `raw_orders` and `raw_order_details`.
+
+The tests are implemented in the `schema.yml` file:
+
+```yml
+version: 2
+
+sources:
+  - name: raw
+    database: sales
+    schema: public
+    tables:
+      - name: customers
+      - name: orders
+      - name: products
+      - name: order_details
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+
+  - name: customer_sales
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('customers')
+              field: customer_id
+      - name: total_sales
+        tests:
+          - not_null
+```
+
+The tests ensure that the `customer_id` and `email` columns in the `customers` table are unique and not null. The `customer_id` column in the `customer_sales` table is unique, not null and has a relationship with the `customer_id` column in the `customers` table. The `total_sales` column in the `customer_sales` table is not null.
+
+To run the tests, use the following command:
+
+```bash
+dbt clean && dbt compile && dbt run && dbt test
+```
+
 ## Tools Used
 
 - **Database**: PostgreSQL
