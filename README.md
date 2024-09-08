@@ -270,3 +270,4 @@ dbt clean && dbt compile && dbt run && dbt test
 
 - **Database**: PostgreSQL
 - PgAdmin 4
+- Python
