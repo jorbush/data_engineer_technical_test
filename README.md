@@ -148,6 +148,25 @@ We provide the following descriptions of the entities in an inventory management
 
 ---
 
+### Solution for Exercise 3
+
+The data model for the inventory management system is designed as follows:
+
+![Data model for the inventory management system](./part_2/data_model.png)
+
+The data model consists of three entities: `Products`, `Suppliers` and `Sales`.
+
+- The `Products` entity contains details about the items available for sale, such as `product_id`, `name`, `operation` (an `ENUM`, can be `sold` or `bought`), `category` (a VARCHAR because we don't now all the existent categories) and `supplier_id` (a foreign key to the `Suppliers` entity).
+- The `Suppliers` entity contains information about the entities that provide products, such as `supplier_id`, `name`, `email` and `phone`.
+- The `Sales` entity represents transactions where products are sold to customers. It contains details such as `sale_id`, `product_id` (a foreign key to the `Products` entity), `sale_date` and `price`.
+
+The relationships between these entities are as follows:
+
+- Each `Product` can have multiple `Sales` and `Sale` can have one `Product`.
+- Each `Product` can have one `Supplier` and one `Supplier` can supply multiple `Products`.
+
+The modeling approach chosen is a **3NF (Third Normal Form)** model because it reduces data redundancy and ensures data integrity, making it perfect for transactional systems such as this one. The other two approaches are more suitable for data warehousing and business intelligence systems.
+
 ## Part 3: DBT (Data Build Tool)
 
 ### Exercise 4: Creating DBT Models
@@ -163,23 +182,6 @@ Assume you have a database with the following tables: `raw_customers`, `raw_orde
 #### Delivery:
 - Include the relevant `.sql` and `.yml` files for DBT.
 - Explain the testing process and any relevant configurations.
-
----
-
-## Part 4: Data Analysis and PowerBI (Optional)
-
-### Exercise 5: Data Analysis and Dashboard in PowerBI
-*(Only if you have experience with PowerBI; otherwise, skip this section.)*
-
-#### Instructions:
-1. Using a dataset of your choice or one provided (e.g., sales data), create a dashboard in PowerBI that shows:
-    - Sales by category.
-    - Sales by region.
-    - Monthly sales comparison.
-
-#### Delivery:
-- A PowerBI file (`.pbix`) with the dashboard.
-- A brief explanation of the design decisions for the dashboard.
 
 ---
 
